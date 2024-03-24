@@ -39,12 +39,21 @@ namespace weather
             Weather weather = JsonSerializer.Deserialize<Weather>(response.ToString());
             return weather.current.feels_like;
         }
-        
+
          public static void Main(string[] args)
         {
 
         }
 
+        public string Get_Outfit(double temperature)
+        {
+            if (temperature < 10)
+                    return "Jacket";
+                else if (temperature < 20)
+                    return "Jumper";
+                else
+                    return "Casual";
+        }
     }
        
       
