@@ -22,7 +22,7 @@ public class Tests
         //Validates get_geocode function fetches lat, lon from openWeatherMap geocode API 
         WeatherAPI weatherAPI = new WeatherAPI();
         double temperature = weatherAPI.get_temperature(lat, lon);
-        Assert.IsNotNull(temperature);
+        Assert.IsTrue(temperature.GetType() == typeof(double));
         Assert.Pass();
     }
 }
