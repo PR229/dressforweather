@@ -42,7 +42,38 @@ namespace weather
 
          public static void Main(string[] args)
         {
+            var builder = WebApplication.CreateBuilder();
 
+            // Add services to the container.
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddControllers().AddNewtonsoftJson();
+            builder.Services.AddSwaggerGen();
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
+            app.UseHttpsRedirection();
+            app.MapGet("/dressforweather/{page}", (string page) =>
+            {
+                WeatherAPI weather = new WeatherAPI();
+                var data = weather.Get_CityOutfit(page);
+                var outfitJson = new 
+                    {
+                        TemperatureCelsius = data.Item1,
+                        Outfit = data.Item2
+                    };
+                return outfitJson;
+            })
+            .WithName("GetDressforWeather")
+            .WithOpenApi();
+            app.Run();
         }
 
         public string Get_Outfit(double temperature)
@@ -53,6 +84,14 @@ namespace weather
                     return "Jumper";
                 else
                     return "Casual";
+        }
+
+        public (double,string) Get_CityOutfit(string city)
+        {
+            (double, double) coordinates = get_geocode(city);
+            double temperature = Get_temperature(coordinates.Item1, coordinates.Item2);
+            string outfit = Get_Outfit(temperature);
+            return (temperature, outfit);
         }
     }
        
