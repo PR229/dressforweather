@@ -43,8 +43,9 @@ public class Tests
         //Validates Get_CityOutfit function returns recommended outfit based on city name
 
         WeatherAPI weatherAPI = new WeatherAPI();
-        string recommendedoutfit = weatherAPI.Get_CityOutfit(city);
-        Assert.That(recommendedoutfit, Is.EqualTo(expectedOutfit));
+        (double,string) recommendedoutfit = weatherAPI.Get_CityOutfit(city);
+        Assert.IsTrue(recommendedoutfit.Item1.GetType() == typeof(double));
+        Assert.That(expectedOutfit, Is.EqualTo(recommendedoutfit.Item2));
         Assert.Pass();
     }
 
