@@ -19,11 +19,12 @@ public class Tests
     [TestCase(37.8, 144.9)]
     public void Get_temperature_returnsCurrentTemperature(double lat, double lon)
     {
-        //Validates get_geocode function fetches lat, lon from openWeatherMap geocode API 
+        //Validates get_temperature function fetches feels_like from openWeatherMap weather API 
         WeatherAPI weatherAPI = new WeatherAPI();
         var temperature = weatherAPI.Get_temperature(lat, lon);
         Assert.IsTrue(temperature.GetType() == typeof(double));
         Assert.Pass();
     }
+
 }
 
