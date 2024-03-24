@@ -27,12 +27,23 @@ public class Tests
     }
 
     [TestCase(19, "Jumper"),TestCase(9, "Jacket"), TestCase(29, "Casual")]
-    public void Get_Outfit_returnsCurrentTemperature(double temperature, string expectedOutfit)
+    public void Get_Outfit_returnsOutfit(double temperature, string expectedOutfit)
     {
-        //Validates Get_CityDress function returns recommended outfit based on Get_temperature function
+        //Validates Get_Outfit function returns recommended outfit based on Get_temperature function
 
         WeatherAPI weatherAPI = new WeatherAPI();
         string recommendedoutfit = weatherAPI.Get_Outfit(temperature);
+        Assert.That(recommendedoutfit, Is.EqualTo(expectedOutfit));
+        Assert.Pass();
+    }
+
+     [TestCase("Melbourne", "Jumper"),TestCase("Alaska", "Jacket"), TestCase("Mumbai", "Casual")]
+    public void Get_CityOutfit_returnsOutfitforCityName(string city, string expectedOutfit)
+    {
+        //Validates Get_CityOutfit function returns recommended outfit based on city name
+
+        WeatherAPI weatherAPI = new WeatherAPI();
+        string recommendedoutfit = weatherAPI.Get_CityOutfit(city);
         Assert.That(recommendedoutfit, Is.EqualTo(expectedOutfit));
         Assert.Pass();
     }
