@@ -3,34 +3,49 @@ using System.Text.Json;
 using Microsoft.AspNetCore.DataProtection;
 namespace weather
 {
-    public class WeatherAPI {
+    public class WeatherAPI
+    {
         private string apiKey = null;
-        public WeatherAPI(){
+        private HttpClient client;
+
+        public WeatherAPI()
+        {
+            client = new HttpClient();
             IConfigurationRoot config = new ConfigurationBuilder()
             .AddUserSecrets<WeatherAPI>()
             .Build();
             SetApiKey(config["OpenWeatherMap:ApiKey"]);
         }
-        public string GetApiKey() {
+        public string GetApiKey()
+        {
             return apiKey;
         }
 
-        public void SetApiKey(String value){
+        public void SetApiKey(String value)
+        {
             apiKey = value;
         }
 
         public (double, double) get_geocode(string city)
-            {
-      
-                HttpClient client = new HttpClient();
-                string response = client.GetStringAsync($"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={apiKey}").Result;
-                List<Location> locations = JsonSerializer.Deserialize<List<Location>>(response.ToString());
-                return (locations[0].lat, locations[0].lon);
-            }
+        {
+            string response = client.GetStringAsync($"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={apiKey}").Result;
+            List<Location> locations = JsonSerializer.Deserialize<List<Location>>(response.ToString());
+            return (locations[0].lat, locations[0].lon);
+        }
 
-        public static void Main(string[] args)
+        public double Get_temperature(double lat, double lon)
+        {
+            string response = client.GetStringAsync($"https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&units=metric&exclude=hourly,daily&appid={apiKey}").Result;
+            Weather weather = JsonSerializer.Deserialize<Weather>(response.ToString());
+            return weather.current.feels_like;
+        }
+        
+         public static void Main(string[] args)
         {
 
         }
+
     }
+       
+      
 }
