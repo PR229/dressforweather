@@ -41,7 +41,6 @@ namespace weather
          public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder();
-            string port = Environment.GetEnvironmentVariable("APPSETTING_PORT");
 
 
             // Add services to the container.
