@@ -10,11 +10,9 @@ namespace weather
 
         public WeatherAPI()
         {
+            apiKey = Environment.GetEnvironmentVariable("APPSETTING_OPENWEATHER_API_KEY");
+            System.Diagnostics.Trace.TraceError(apiKey + "found apikey");
             client = new HttpClient();
-            IConfigurationRoot config = new ConfigurationBuilder()
-            .AddUserSecrets<WeatherAPI>()
-            .Build();
-            SetApiKey(config["OpenWeatherMap:ApiKey"]);
         }
         public string GetApiKey()
         {
@@ -43,12 +41,15 @@ namespace weather
          public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder();
+            string port = Environment.GetEnvironmentVariable("APPSETTING_PORT");
+
 
             // Add services to the container.
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddControllers().AddNewtonsoftJson();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen();;
+
 
             var app = builder.Build();
 
@@ -58,8 +59,9 @@ namespace weather
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseAuthorization();
+            app.MapControllers();
 
-            app.UseHttpsRedirection();
             app.MapGet("/dressforweather/{page}", (string page) =>
             {
                 WeatherAPI weather = new WeatherAPI();
