@@ -1,4 +1,4 @@
-# dressforweather
+# .NET API - dressforweather 
 ASP.NET Minimal Web API endpoint to recommend an outfit based on temperature at a city
 
 This project consists of the dressforweather and dressforweatherTests folder.
