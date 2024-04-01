@@ -1,24 +1,24 @@
-# Use the official .NET Core SDK as a parent image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 8080
+
+ENV ASPNETCORE_URLS=http://+:8080
+
+USER app
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /app
-
-# Copy the project file and restore any dependencies (use .csproj for the project name)
-COPY *.csproj ./
-RUN dotnet restore
-
-# Copy the rest of the application code
+ARG configuration=Release
+WORKDIR /src
+COPY ["dressforweather/dressforweather.csproj", "dressforweather/"]
+RUN dotnet restore "dressforweather/dressforweather.csproj"
 COPY . .
+WORKDIR "/src/dressforweather"
+RUN dotnet build "dressforweather.csproj" -c $configuration -o /app/build
 
-# Publish the application
-RUN dotnet publish -c Release -o out
+FROM build AS publish
+ARG configuration=Release
+RUN dotnet publish "dressforweather.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
 
-# Build the runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+FROM base AS final
 WORKDIR /app
-COPY --from=build /app/out ./
-
-# Expose the port your application will run on
-EXPOSE 8089
-
-# Start the application
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "dressforweather.dll"]
