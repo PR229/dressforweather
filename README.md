@@ -9,5 +9,5 @@ Endpoint: https://dressforweatherapi.azurewebsites.net/dressforweather/{city}
 Sample response: {"temperatureCelsius":1.47,"outfit":"Jacket"}
 
 Deployed using Azure App service
-![alt text](https://github.com/PR229/dressforweather/blob/main/DressforWeatherRG.png)
+<img src="https://github.com/favicon.ico](https://github.com/PR229/dressforweather/blob/main/DressforWeatherRG.png" width="100">
 
