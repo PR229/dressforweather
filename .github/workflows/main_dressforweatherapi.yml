@@ -9,6 +9,10 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  # Setting an environment variable with the value of a configuration variable
+  APPSETTING_OPENWEATHER_API_KEY: ${{ vars.APPSETTING_OPENWEATHER_API_KEY }}
+
 jobs:
   build:
     runs-on: windows-latest
