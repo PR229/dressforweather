@@ -9,13 +9,13 @@ namespace weather
 {
     public class WeatherAPI
     {
-        private string apiKey = null;
+        private string apiKey;
         private HttpClient client;
 
 
         public WeatherAPI()
         {
-            Environment.GetEnvironmentVariable("APPSETTING_OPENWEATHER_API_KEY");
+            apiKey = Environment.GetEnvironmentVariable("APPSETTING_OPENWEATHER_API_KEY");
             System.Diagnostics.Trace.TraceError(apiKey + "found apikey");
             client = new HttpClient();
         }
